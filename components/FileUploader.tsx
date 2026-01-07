@@ -10,20 +10,33 @@ import {
   SaveIcon,
 } from "lucide-react";
 // import useUpload, { StatusText } from "@/hooks/useUpload";
+import useUpload from "@/hooks/useUpload";
 import { useRouter } from "next/navigation";
 // import useSubscription from "@/hooks/useSubscription";
 // import { useToast } from "./ui/use-toast";
 
 function FileUploader() {
+
+  const {progress, status ,fileId, handleUpload} = useUpload();
   const onDrop = useCallback(
     async (acceptedFiles: File[]) => {
       // Do something with the files
-      console.log(acceptedFiles);
+      const file = acceptedFiles[0];
+      if (file) {
+        await handleUpload(file)
+      } else {
+        // here would be subscription feautre tomoroow
+        //toast ....
+      }
 },[])
   
   const { getRootProps, getInputProps, isDragActive, isFocused, isDragAccept } =
     useDropzone({
       onDrop,
+      maxFiles : 1,
+      accept: {
+        "application/pdf" : [".pdf"],
+      }
     });
 
  return (
